@@ -6,10 +6,6 @@ networks:
     name: elastic
     external: false
 
-# will contain all elasticsearch data.
-volumes:
-  elasticsearch-data:
-
 secrets:
   elasticsearch.keystore:
     file: ./secrets/keystore/elasticsearch.keystore
@@ -42,9 +38,17 @@ services:
       ELASTIC_INIT_MASTER_NODE: ${ELASTIC_INIT_MASTER_NODE}
       ELASTIC_DISCOVERY_SEEDS: ${ELASTIC_DISCOVERY_SEEDS}
       ES_JAVA_OPTS: "-Xmx${ELASTICSEARCH_HEAP} -Xms${ELASTICSEARCH_HEAP} -Des.enforce.bootstrap.checks=true -Dlog4j2.formatMsgNoLookups=true"
+      discovery.type: single-node
       bootstrap.memory_lock: "true"
-    volumes:
-      - elasticsearch-data:/usr/share/elasticsearch/data
+    deploy:
+      resources:
+        limits:          
+          memory: 8192M
+          cpus: '4'
+        reservations:          
+          memory: 2048M
+          cpus: '1'
+    volumes:      
       - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
       - ./elasticsearch/config/log4j2.properties:/usr/share/elasticsearch/config/log4j2.properties
     secrets:

@@ -2,3 +2,6 @@
 .DS_Store
 /secrets
 tools/elastalert/rules/*
+.vscode/configurationCache.log
+.vscode/settings.json
+.vscode/targets.log
