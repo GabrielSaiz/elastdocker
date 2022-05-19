@@ -36,7 +36,7 @@ Elastic Stack (**ELK**) Docker Composition, preconfigured with **Security**, **M
 
 Suitable for Demoing, MVPs and small production deployments.
 
-Stack Version: [8.0.1](https://www.elastic.co/blog/whats-new-elastic-8-0-0) 🎉  - Based on [Official Elastic Docker Images](https://www.docker.elastic.co/)
+Stack Version: [8.2.0](https://www.elastic.co/blog/whats-new-elastic-8-2-0) 🎉  - Based on [Official Elastic Docker Images](https://www.docker.elastic.co/)
 > You can change Elastic Stack version by setting `ELK_VERSION` in `.env` file and rebuild your images. Any version >= 8.0.0 is compatible with this template.
 
 ### Main Features 📜
@@ -113,7 +113,7 @@ Elastdocker differs from `deviantony/docker-elk` in the following points.
     > **For Linux's docker hosts only**. By default virtual memory [is not enough](https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html) so run the next command as root `sysctl -w vm.max_map_count=262144`
 3. Start Elastic Stack
     ```bash
-    $ make elk           <OR>         $ docker-compose up -d
+    $ make elk           <OR>         $ docker compose up -d
     ```
 4. Visit Kibana at [https://localhost:5601](https://localhost:5601) or `https://<your_public_ip>:5601`
 
