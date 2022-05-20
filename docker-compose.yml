@@ -86,6 +86,7 @@ services:
       - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
       - ./logstash/config/pipelines.yml:/usr/share/logstash/config/pipelines.yml:ro
       - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
+      - /tmp/logstash/input:/tmp/logstash/input:ro
     secrets:
       - source: elastic.ca
         target: /certs/ca.crt
