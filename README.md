@@ -32,79 +32,33 @@
 </p>
 
 # Introduction
+**This repo is a fork of https://github.com/sherifabdlnaby/elastdocker.**
+
+I've updated some configurations and other stuff in order to learn how to work with ELK and how to adapt it for my requirements
+
 Elastic Stack (**ELK**) Docker Composition, preconfigured with **Security**, **Monitoring**, and **Tools**; Up with a Single Command.
 
-Suitable for Demoing, MVPs and small production deployments.
 
 Stack Version: [8.2.0](https://www.elastic.co/blog/whats-new-elastic-8-2-0) 🎉  - Based on [Official Elastic Docker Images](https://www.docker.elastic.co/)
 > You can change Elastic Stack version by setting `ELK_VERSION` in `.env` file and rebuild your images. Any version >= 8.0.0 is compatible with this template.
 
-### Main Features 📜
+### My goals
 
-- Configured as a Production Single Node Cluster. (With a multi-node cluster option for experimenting).
-- Security Enabled By Default.
-- Configured to Enable:
-  - Logging & Metrics Ingestion
-  - APM
-  - Alerting
-  - Machine Learning
-  - SIEM
-  - Enabling Trial License
-- Use Docker-Compose and `.env` to configure your entire stack parameters.
-- Persist Elasticsearch's Keystore and SSL Certifications.
-- Self-Monitoring Metrics Enabled.
-- Prometheus Exporters for Stack Metrics.
-- Collect Docker Host Logs to ELK via `make collect-docker-logs`.
-- Embedded Container Healthchecks for Stack Images.
-- [Rubban](https://github.com/sherifabdlnaby/rubban) for Kibana curating tasks.
+I have this goals:
+1. Understand logstash and how it works
+2. Read a csv file, transform and index in a elastic schema
+3. Read a bundle of csv files, combine, adapt, transform and index in a elastic schema
 
 #### More points
-And comparing Elastdocker and the popular [deviantony/docker-elk](https://github.com/deviantony/docker-elk)
 
-<details><summary>Expand...</summary>
-<p>
+See the original repo https://github.com/sherifabdlnaby/elastdocker
 
-One of the most popular ELK on Docker repositories is the awesome [deviantony/docker-elk](https://github.com/deviantony/docker-elk).
-Elastdocker differs from `deviantony/docker-elk` in the following points.
-
-- Security enabled by default using Basic license, not Trial.
-
-- Persisting data by default in a volume.
-
-- Run in Production Mode (by enabling SSL on Transport Layer, and add initial master node settings).
-
-- Persisting Generated Keystore, and create an extendable script that makes it easier to recreate it every-time the container is created.
-
-- Parameterize credentials in .env instead of hardcoding `elastich:changeme` in every component config.
-
-- Parameterize all other Config like Heap Size.
-
-- Add recommended environment configurations as Ulimits and Swap disable to the docker-compose.
-
-- Make it ready to be extended into a multinode cluster.
-
-- Configuring the Self-Monitoring and the Filebeat agent that ship ELK logs to ELK itself. (as a step to shipping it to a monitoring cluster in the future).
-
-- Configured tools and Prometheus Exporters.
-
-- The Makefile that simplifies everything into some simple commands.
-
-</p>
-</details>
-
------
-
-# Requirements
-
-- [Docker 20.05 or higher](https://docs.docker.com/install/)
-- [Docker-Compose 1.29 or higher](https://docs.docker.com/compose/install/)
-- 4GB RAM (For Windows and MacOS make sure Docker's VM has more than 4GB+ memory.)
 
 # Setup
 
 1. Clone the Repository
      ```bash
-     git clone https://github.com/sherifabdlnaby/elastdocker.git
+     git clone https://github.com/GabrielSaiz/elastdocker
      ```
 2. Initialize Elasticsearch Keystore and TLS Self-Signed Certificates
     ```bash
@@ -119,54 +73,6 @@ Elastdocker differs from `deviantony/docker-elk` in the following points.
 
     Default Username: `elastic`, Password: `changeme`
 
-    > - Notice that Kibana is configured to use HTTPS, so you'll need to write `https://` before `localhost:5601` in the browser.
-    > - Modify `.env` file for your needs, most importantly `ELASTIC_PASSWORD` that setup your superuser `elastic`'s password, `ELASTICSEARCH_HEAP` & `LOGSTASH_HEAP` for Elasticsearch & Logstash Heap Size.
-    
-> Whatever your Host (e.g AWS EC2, Azure, DigitalOcean, or on-premise server), once you expose your host to the network, ELK component will be accessible on their respective ports. Since the enabled TLS uses a self-signed certificate, it is recommended to SSL-Terminate public traffic using your signed certificates. 
-
-> 🏃🏻‍♂️ To start ingesting logs, you can start by running `make collect-docker-logs` which will collect your host's container logs.
-
-## Additional Commands
-
-<details><summary>Expand</summary>
-<p>
-
-#### To Start Monitoring and Prometheus Exporters
-```shell
-$ make monitoring
-```
-#### To Start Tools
-```shell
-$ make tools
-```
-#### To Ship Docker Container Logs to ELK 
-```shell
-$ make collect-docker-logs
-```
-#### To Start **Elastic Stack, Tools and Monitoring**
-```
-$ make all
-```
-#### To Start 2 Extra Elasticsearch nodes (recommended for experimenting only)
-```shell
-$ make nodes
-```
-#### To Rebuild Images
-```shell
-$ make build
-```
-#### Bring down the stack.
-```shell
-$ make down
-```
-
-#### Reset everything, Remove all containers, and delete **DATA**!
-```shell
-$ make prune
-```
-
-</p>
-</details>
 
 # Configuration
 
@@ -206,7 +112,7 @@ make keystore
 
 - Make sure to run `make setup` if you changed `ELASTIC_PASSWORD` and to restart the stack afterwards.
 
-- For Linux Users it's recommended to set the following configuration (run as `root`)
+- **For Linux Users it's recommended to set the following configuration (run as `root`)**
     ```
     sysctl -w vm.max_map_count=262144
     ```
@@ -219,27 +125,6 @@ make keystore
 ![Maps](https://user-images.githubusercontent.com/16992394/156664562-d38e11ee-b033-4b91-80bd-3a866ad65f56.png)
 ![ML](https://user-images.githubusercontent.com/16992394/156664695-5c1ed4a7-82f3-47a6-ab5c-b0ce41cc0fbe.png)
 
-
-# Monitoring The Cluster
-
-### Via Self-Monitoring
-
-Head to Stack Monitoring tab in Kibana to see cluster metrics for all stack components.
-
-![Overview](https://user-images.githubusercontent.com/16992394/156664539-cc7e1a69-f1aa-4aca-93f6-7aedaabedd2c.png)
-![Moniroting](https://user-images.githubusercontent.com/16992394/156664647-78cfe2af-489d-4c35-8963-9b0a46904cf7.png)
-
-> In Production, cluster metrics should be shipped to another dedicated monitoring cluster.
-
-### Via Prometheus Exporters
-If you started Prometheus Exporters using `make monitoring` command. Prometheus Exporters will expose metrics at the following ports.
-
-| **Prometheus Exporter**      | **Port**     | **Recommended Grafana Dashboard**                                         |
-|--------------------------    |----------    |------------------------------------------------  |
-| `elasticsearch-exporter`     | `9114`       | [Elasticsearch by Kristian Jensen](https://grafana.com/grafana/dashboards/4358)                                                |
-| `logstash-exporter`          | `9304`       | [logstash-monitoring by dpavlos](https://github.com/dpavlos/logstash-monitoring)                                               |
-
-![Metrics](https://user-images.githubusercontent.com/16992394/78685076-89a58900-78f1-11ea-959b-ce374fe51500.jpg)
 
 
 # License
