@@ -10,7 +10,14 @@
 #  pipeline.batch.size: 125
 #  queue.page_capacity: 50mb
 
-- pipeline.id: categories-step1
-  path.config: '/usr/share/logstash/pipeline/categories-step1.conf'
-- pipeline.id: categories-step2
-  path.config: '/usr/share/logstash/pipeline/categories-step2.conf'
+# Independant pipelines
+# - pipeline.id: categories-step1
+#   path.config: '/usr/share/logstash/pipeline/categories-step1.conf'
+# - pipeline.id: categories-step2
+#   path.config: '/usr/share/logstash/pipeline/categories-step2.conf'
+
+# Pipelines to Pipeline
+- pipeline.id: p2p-categories-step1
+  path.config: '/usr/share/logstash/pipeline/p2p-categories-step1.conf'
+- pipeline.id: p2p-categories-step2
+  path.config: '/usr/share/logstash/pipeline/p2p-categories-step2.conf'
