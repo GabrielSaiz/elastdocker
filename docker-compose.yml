@@ -51,6 +51,7 @@ services:
     volumes:      
       - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
       - ./elasticsearch/config/log4j2.properties:/usr/share/elasticsearch/config/log4j2.properties
+      - ./elasticsearch/config/stopwords:/usr/share/elasticsearch/config/stopwords:ro
     secrets:
       - source: elasticsearch.keystore
         target: /usr/share/elasticsearch/config/elasticsearch.keystore
@@ -86,7 +87,7 @@ services:
       - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
       - ./logstash/config/pipelines.yml:/usr/share/logstash/config/pipelines.yml:ro
       - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
-      - /tmp/logstash/input:/tmp/logstash/input:ro
+      - ./logstash/input:/tmp/logstash/input:ro
     secrets:
       - source: elastic.ca
         target: /certs/ca.crt
